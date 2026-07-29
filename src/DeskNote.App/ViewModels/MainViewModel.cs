@@ -6,15 +6,20 @@ namespace DeskNote.App.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    public MainViewModel(TodoEditorViewModel editor, TodoListViewModel todoList)
+    public MainViewModel(
+        TodoEditorViewModel editor,
+        TodoListViewModel todoList,
+        SettingsViewModel settings)
     {
         Editor = editor;
         TodoList = todoList;
+        Settings = settings;
         Editor.Saved += OnEditorSaved;
     }
 
     public TodoEditorViewModel Editor { get; }
     public TodoListViewModel TodoList { get; }
+    public SettingsViewModel Settings { get; }
 
     [ObservableProperty]
     private NavigationPage currentPage = NavigationPage.Incomplete;

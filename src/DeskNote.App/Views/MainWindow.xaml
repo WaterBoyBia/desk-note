@@ -26,6 +26,9 @@
     <DataTemplate x:Key="CompletedTemplate">
       <views:CompletedTodosView DataContext="{Binding}" />
     </DataTemplate>
+    <DataTemplate x:Key="SettingsTemplate">
+      <views:SettingsView DataContext="{Binding Settings}" />
+    </DataTemplate>
   </Window.Resources>
 
   <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
@@ -39,7 +42,9 @@
         <TextBlock Margin="12,0" VerticalAlignment="Center" FontWeight="SemiBold" Text="desk-note" />
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
                     shell:WindowChrome.IsHitTestVisibleInChrome="True">
-          <ToggleButton Width="38" ToolTip="窗口置顶" Checked="OnPinChanged" Unchecked="OnPinChanged">📌</ToggleButton>
+          <ToggleButton Width="38" ToolTip="窗口置顶"
+                        IsChecked="{Binding Settings.AlwaysOnTop, Mode=OneWay}"
+                        Checked="OnPinChanged" Unchecked="OnPinChanged">📌</ToggleButton>
           <Button Width="38" Click="OnMinimize">—</Button>
           <Button Width="38" Click="OnMaximize">□</Button>
           <Button Width="38" Click="OnHide">×</Button>
@@ -100,6 +105,9 @@
                 </DataTrigger>
                 <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static models:NavigationPage.Completed}">
                   <Setter Property="ContentTemplate" Value="{StaticResource CompletedTemplate}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static models:NavigationPage.Settings}">
+                  <Setter Property="ContentTemplate" Value="{StaticResource SettingsTemplate}" />
                 </DataTrigger>
               </Style.Triggers>
             </Style>

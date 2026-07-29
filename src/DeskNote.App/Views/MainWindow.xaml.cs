@@ -43,8 +43,15 @@ public partial class MainWindow : Window
         });
     }
 
-    private void OnPinChanged(object sender, RoutedEventArgs e) =>
-        Topmost = sender is System.Windows.Controls.Primitives.ToggleButton { IsChecked: true };
+    private async void OnPinChanged(object sender, RoutedEventArgs e)
+    {
+        var enabled = sender is System.Windows.Controls.Primitives.ToggleButton { IsChecked: true };
+        if (DataContext is ViewModels.MainViewModel viewModel)
+        {
+            await viewModel.Settings.SetAlwaysOnTopCommand.ExecuteAsync(enabled);
+            Topmost = viewModel.Settings.AlwaysOnTop;
+        }
+    }
 
     private void OnMinimize(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 

@@ -24,7 +24,14 @@ public sealed record DataMigrationResult(bool Succeeded, string? ErrorMessage)
     public static DataMigrationResult Failure(string message) => new(false, message);
 }
 
-public sealed class DataMigrationService
+public interface IDataMigrationService
+{
+    Task<DataMigrationResult> MigrateAsync(
+        string targetDirectory,
+        CancellationToken cancellationToken = default);
+}
+
+public sealed class DataMigrationService : IDataMigrationService
 {
     private readonly SettingsService settings;
     private readonly IDataLocator locator;
