@@ -3,7 +3,13 @@ using System.Text.Json;
 
 namespace DeskNote.App.Infrastructure;
 
-public sealed class JsonDataLocator
+public interface IDataLocator
+{
+    Task<string> GetOrCreateAsync(CancellationToken cancellationToken = default);
+    Task SetAsync(string dataDirectory, CancellationToken cancellationToken = default);
+}
+
+public sealed class JsonDataLocator : IDataLocator
 {
     private readonly string locatorFile;
     private readonly string defaultDataDirectory;

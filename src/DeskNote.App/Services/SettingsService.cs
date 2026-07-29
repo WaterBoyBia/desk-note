@@ -6,10 +6,10 @@ namespace DeskNote.App.Services;
 
 public sealed class SettingsService
 {
-    private readonly JsonDataLocator locator;
+    private readonly IDataLocator locator;
     private readonly JsonSettingsStore store;
 
-    public SettingsService(JsonDataLocator locator, JsonSettingsStore store)
+    public SettingsService(IDataLocator locator, JsonSettingsStore store)
     {
         this.locator = locator;
         this.store = store;

@@ -4,9 +4,18 @@ using Microsoft.Data.Sqlite;
 
 namespace DeskNote.App.Repositories;
 
-public sealed class SqliteTodoRepository(string databaseFile) : ITodoRepository
+public sealed class SqliteTodoRepository : ITodoRepository
 {
-    private readonly string connectionString = DatabaseInitializer.BuildConnectionString(databaseFile);
+    private readonly Func<string> databaseFileProvider;
+
+    public SqliteTodoRepository(string databaseFile) : this(() => databaseFile)
+    {
+    }
+
+    public SqliteTodoRepository(Func<string> databaseFileProvider)
+    {
+        this.databaseFileProvider = databaseFileProvider;
+    }
 
     public Task<IReadOnlyList<TodoItem>> ListIncompleteAsync(
         TodoSortDirection direction,
@@ -120,7 +129,8 @@ public sealed class SqliteTodoRepository(string databaseFile) : ITodoRepository
 
     private async Task<SqliteConnection> OpenAsync(CancellationToken cancellationToken)
     {
-        var connection = new SqliteConnection(connectionString);
+        var connection = new SqliteConnection(
+            DatabaseInitializer.BuildConnectionString(databaseFileProvider()));
         await connection.OpenAsync(cancellationToken);
         return connection;
     }
