@@ -10,6 +10,7 @@ public partial class MainViewModel : ObservableObject
     {
         Editor = editor;
         TodoList = todoList;
+        Editor.Saved += OnEditorSaved;
     }
 
     public TodoEditorViewModel Editor { get; }
@@ -19,5 +20,26 @@ public partial class MainViewModel : ObservableObject
     private NavigationPage currentPage = NavigationPage.Incomplete;
 
     [RelayCommand]
-    private void Navigate(NavigationPage page) => CurrentPage = page;
+    private void Navigate(NavigationPage page)
+    {
+        if (page == NavigationPage.Create)
+        {
+            Editor.BeginCreate();
+        }
+
+        CurrentPage = page;
+    }
+
+    [RelayCommand]
+    private void EditTodo(TodoItem item)
+    {
+        Editor.BeginEdit(item);
+        CurrentPage = NavigationPage.Create;
+    }
+
+    private async void OnEditorSaved(object? sender, EventArgs e)
+    {
+        CurrentPage = NavigationPage.Incomplete;
+        await TodoList.LoadCommand.ExecuteAsync(null);
+    }
 }

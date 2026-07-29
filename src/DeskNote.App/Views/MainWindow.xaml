@@ -1,0 +1,111 @@
+<Window x:Class="DeskNote.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:models="clr-namespace:DeskNote.App.Models"
+        xmlns:views="clr-namespace:DeskNote.App.Views"
+        Title="desk-note"
+        Width="420" Height="600"
+        MinWidth="360" MinHeight="480"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{DynamicResource WindowBrush}"
+        Foreground="{DynamicResource TextBrush}"
+        Closing="OnClosing">
+  <shell:WindowChrome.WindowChrome>
+    <shell:WindowChrome CaptionHeight="34" ResizeBorderThickness="6" CornerRadius="0" />
+  </shell:WindowChrome.WindowChrome>
+
+  <Window.Resources>
+    <DataTemplate x:Key="CreateTemplate">
+      <views:TodoEditorView DataContext="{Binding Editor}" />
+    </DataTemplate>
+    <DataTemplate x:Key="IncompleteTemplate">
+      <views:IncompleteTodosView DataContext="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="CompletedTemplate">
+      <views:CompletedTodosView DataContext="{Binding}" />
+    </DataTemplate>
+  </Window.Resources>
+
+  <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="34" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <Grid Grid.Row="0" Background="{DynamicResource PanelBrush}">
+        <TextBlock Margin="12,0" VerticalAlignment="Center" FontWeight="SemiBold" Text="desk-note" />
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True">
+          <ToggleButton Width="38" ToolTip="窗口置顶" Checked="OnPinChanged" Unchecked="OnPinChanged">📌</ToggleButton>
+          <Button Width="38" Click="OnMinimize">—</Button>
+          <Button Width="38" Click="OnMaximize">□</Button>
+          <Button Width="38" Click="OnHide">×</Button>
+        </StackPanel>
+      </Grid>
+
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="Sidebar"
+                Grid.Column="0"
+                Width="58"
+                Panel.ZIndex="2"
+                Background="{DynamicResource SidebarBrush}"
+                ClipToBounds="True"
+                MouseEnter="OnSidebarMouseEnter"
+                MouseLeave="OnSidebarMouseLeave"
+                GotKeyboardFocus="OnSidebarFocusChanged"
+                LostKeyboardFocus="OnSidebarFocusChanged">
+          <StackPanel Margin="8,12">
+            <Button Height="42" HorizontalContentAlignment="Left"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Static models:NavigationPage.Create}"
+                    ToolTip="创建新待办">
+              <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="＋" /><TextBlock Text="创建新待办" /></StackPanel>
+            </Button>
+            <Button Height="42" HorizontalContentAlignment="Left"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Static models:NavigationPage.Incomplete}"
+                    ToolTip="未完成待办">
+              <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="○" /><TextBlock Text="未完成待办" /></StackPanel>
+            </Button>
+            <Button Height="42" HorizontalContentAlignment="Left"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Static models:NavigationPage.Completed}"
+                    ToolTip="已完成待办">
+              <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="✓" /><TextBlock Text="已完成待办" /></StackPanel>
+            </Button>
+            <Button Height="42" HorizontalContentAlignment="Left"
+                    Command="{Binding NavigateCommand}"
+                    CommandParameter="{x:Static models:NavigationPage.Settings}"
+                    ToolTip="设置">
+              <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="⚙" /><TextBlock Text="设置" /></StackPanel>
+            </Button>
+          </StackPanel>
+        </Border>
+
+        <ContentControl Grid.Column="1" Content="{Binding}" Margin="14">
+          <ContentControl.Style>
+            <Style TargetType="ContentControl">
+              <Setter Property="ContentTemplate" Value="{StaticResource IncompleteTemplate}" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static models:NavigationPage.Create}">
+                  <Setter Property="ContentTemplate" Value="{StaticResource CreateTemplate}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Static models:NavigationPage.Completed}">
+                  <Setter Property="ContentTemplate" Value="{StaticResource CompletedTemplate}" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ContentControl.Style>
+        </ContentControl>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

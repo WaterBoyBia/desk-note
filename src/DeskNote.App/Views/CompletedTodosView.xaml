@@ -1,0 +1,43 @@
+<UserControl x:Class="DeskNote.App.Views.CompletedTodosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" FontSize="22" FontWeight="SemiBold" Text="已完成待办" />
+    <ListBox Grid.Row="1" ItemsSource="{Binding TodoList.CompletedItems}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border Margin="0,4" Padding="10" CornerRadius="10"
+                  Background="{DynamicResource PanelBrush}"
+                  BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <Grid>
+              <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+              <StackPanel Grid.Column="0"><TextBlock TextDecorations="Strikethrough" TextWrapping="Wrap" Text="{Binding Title}" /><TextBlock Foreground="{DynamicResource MutedTextBrush}" Text="{Binding CompletedAt, StringFormat='完成于 {0:g}'}" /></StackPanel>
+              <Button Grid.Column="1" Content="恢复"
+                      Command="{Binding DataContext.TodoList.RestoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                      CommandParameter="{Binding}" />
+              <Button Grid.Column="2" Content="删除"
+                      Command="{Binding DataContext.TodoList.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                      CommandParameter="{Binding}" />
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+    <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+               Foreground="{DynamicResource MutedTextBrush}" Text="暂无已完成待办">
+      <TextBlock.Style>
+        <Style TargetType="TextBlock">
+          <Setter Property="Visibility" Value="Collapsed" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding TodoList.CompletedItems.Count}" Value="0">
+              <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBlock.Style>
+    </TextBlock>
+    <Button Grid.Row="2" HorizontalAlignment="Right" Margin="0,10,0,0"
+            Content="全部清空" Command="{Binding TodoList.ClearCompletedCommand}" />
+  </Grid>
+</UserControl>
