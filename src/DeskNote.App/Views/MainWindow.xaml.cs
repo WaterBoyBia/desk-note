@@ -15,10 +15,29 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
+    public event EventHandler? Hiding;
+
     public void ExitApplication()
     {
         allowClose = true;
         Close();
+    }
+
+    public void ShowAndActivate()
+    {
+        Show();
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        Activate();
+    }
+
+    private void HideWindow()
+    {
+        Hiding?.Invoke(this, EventArgs.Empty);
+        Hide();
     }
 
     private void OnSidebarMouseEnter(object sender, MouseEventArgs e) => AnimateSidebar(150);
@@ -58,14 +77,17 @@ public partial class MainWindow : Window
     private void OnMaximize(object sender, RoutedEventArgs e) =>
         WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
-    private void OnHide(object sender, RoutedEventArgs e) => Hide();
+    private void OnHide(object sender, RoutedEventArgs e) => HideWindow();
 
     private void OnClosing(object? sender, CancelEventArgs e)
     {
-        if (!allowClose)
+        if (allowClose)
         {
-            e.Cancel = true;
-            Hide();
+            Hiding?.Invoke(this, EventArgs.Empty);
+            return;
         }
+
+        e.Cancel = true;
+        HideWindow();
     }
 }

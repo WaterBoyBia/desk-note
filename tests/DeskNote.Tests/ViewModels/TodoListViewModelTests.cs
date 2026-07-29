@@ -53,6 +53,20 @@ public sealed class TodoListViewModelTests
         Assert.Equal("操作失败，请重试。", viewModel.ErrorMessage);
     }
 
+    [Fact]
+    public async Task DeleteCommand_DoesNotDeleteWhenUserCancels()
+    {
+        var service = new FakeTodoService();
+        var item = CreateTodo(false);
+        service.Incomplete.Add(item);
+        var viewModel = new TodoListViewModel(service, new RejectConfirmationService());
+        await viewModel.LoadCommand.ExecuteAsync(null);
+
+        await viewModel.DeleteCommand.ExecuteAsync(item);
+
+        Assert.Single(viewModel.IncompleteItems);
+    }
+
     private static TodoItem CreateTodo(bool completed)
     {
         var now = DateTimeOffset.UtcNow;
@@ -114,5 +128,10 @@ public sealed class TodoListViewModelTests
 
         public Task<TodoItem> UpdateAsync(Guid id, string? title, string? note, CancellationToken cancellationToken = default) =>
             throw new NotSupportedException();
+    }
+
+    private sealed class RejectConfirmationService : IConfirmationService
+    {
+        public bool Confirm(string message, string title) => false;
     }
 }

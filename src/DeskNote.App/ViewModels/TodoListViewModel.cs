@@ -9,11 +9,17 @@ namespace DeskNote.App.ViewModels;
 public partial class TodoListViewModel : ObservableObject
 {
     private readonly ITodoService todoService;
+    private readonly IConfirmationService confirmationService;
 
-    public TodoListViewModel(ITodoService todoService)
+    public TodoListViewModel(
+        ITodoService todoService,
+        IConfirmationService? confirmationService = null)
     {
         this.todoService = todoService;
+        this.confirmationService = confirmationService ?? new AlwaysConfirmService();
     }
+
+    public event EventHandler<TodoSortDirection>? SortDirectionChanged;
 
     public ObservableCollection<TodoItem> IncompleteItems { get; } = [];
     public ObservableCollection<TodoItem> CompletedItems { get; } = [];
@@ -48,26 +54,43 @@ public partial class TodoListViewModel : ObservableObject
         });
 
     [RelayCommand]
-    private Task DeleteAsync(TodoItem item) =>
-        RunAsync(async () =>
+    private Task DeleteAsync(TodoItem item)
+    {
+        if (!confirmationService.Confirm($"确定永久删除“{item.Title}”吗？", "删除待办"))
+        {
+            return Task.CompletedTask;
+        }
+
+        return RunAsync(async () =>
         {
             await todoService.DeleteAsync(item.Id);
             await ReloadAsync();
         });
+    }
 
     [RelayCommand]
-    private Task ClearCompletedAsync() =>
-        RunAsync(async () =>
+    private Task ClearCompletedAsync()
+    {
+        if (!confirmationService.Confirm(
+            $"确定永久删除全部 {CompletedItems.Count} 条已完成待办吗？",
+            "清空已完成待办"))
+        {
+            return Task.CompletedTask;
+        }
+
+        return RunAsync(async () =>
         {
             await todoService.DeleteCompletedAsync();
             await ReloadAsync();
         });
+    }
 
     [RelayCommand]
     private Task SetSortAsync(TodoSortDirection direction) =>
         RunAsync(async () =>
         {
             SortDirection = direction;
+            SortDirectionChanged?.Invoke(this, direction);
             await ReloadAsync();
         });
 
