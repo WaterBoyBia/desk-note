@@ -16,9 +16,12 @@ public sealed class JsonDataLocator : IDataLocator
 
     public JsonDataLocator(string? locatorFile = null, string? defaultDataDirectory = null)
     {
-        var appRoot = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "desk-note");
+        var appRootOverride = Environment.GetEnvironmentVariable("DESKNOTE_STATE_ROOT");
+        var appRoot = string.IsNullOrWhiteSpace(appRootOverride)
+            ? Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "desk-note")
+            : Path.GetFullPath(appRootOverride);
         this.locatorFile = locatorFile ?? Path.Combine(appRoot, "locator.json");
         this.defaultDataDirectory = defaultDataDirectory ?? Path.Combine(appRoot, "data");
     }
