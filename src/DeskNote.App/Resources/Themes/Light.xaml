@@ -1,11 +1,26 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <SolidColorBrush x:Key="WindowBrush" Color="#FFF7F8FB" />
-  <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFFFF" />
-  <SolidColorBrush x:Key="SidebarBrush" Color="#FF252A38" />
-  <SolidColorBrush x:Key="PrimaryBrush" Color="#FF6C63FF" />
-  <SolidColorBrush x:Key="TextBrush" Color="#FF2E3544" />
-  <SolidColorBrush x:Key="MutedTextBrush" Color="#FF858E9E" />
-  <SolidColorBrush x:Key="BorderBrush" Color="#FFE1E5EC" />
-  <SolidColorBrush x:Key="DangerBrush" Color="#FFD65252" />
+  <SolidColorBrush x:Key="WindowBrush" Color="#FFF6F0FF" />
+  <SolidColorBrush x:Key="FallbackWindowBrush" Color="#FFF6F0FF" />
+  <SolidColorBrush x:Key="NativeBackdropOverlayBrush" Color="#52F0E4FF" />
+  <SolidColorBrush x:Key="PanelBrush" Color="#D9FFFFFF" />
+  <LinearGradientBrush x:Key="SidebarBrush" StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Offset="0" Color="#E8D4B9FF" />
+    <GradientStop Offset="1" Color="#CFEBDDFF" />
+  </LinearGradientBrush>
+  <SolidColorBrush x:Key="PrimaryBrush" Color="#FF7A3FAE" />
+  <SolidColorBrush x:Key="TextBrush" Color="#FF332440" />
+  <SolidColorBrush x:Key="MutedTextBrush" Color="#FF705F7D" />
+  <SolidColorBrush x:Key="DisabledTextBrush" Color="#75332440" />
+  <SolidColorBrush x:Key="BorderBrush" Color="#BFFFFFFF" />
+  <SolidColorBrush x:Key="GlassSurfaceBrush" Color="#BFFFFFFF" />
+  <SolidColorBrush x:Key="GlassHoverBrush" Color="#E8FFFFFF" />
+  <SolidColorBrush x:Key="GlassPressedBrush" Color="#BFDCC6F2" />
+  <SolidColorBrush x:Key="GlassHighlightBrush" Color="#D9FFFFFF" />
+  <SolidColorBrush x:Key="FocusBrush" Color="#FF8A4FC0" />
+  <SolidColorBrush x:Key="DangerBrush" Color="#FF9F285C" />
+  <SolidColorBrush x:Key="DangerSurfaceBrush" Color="#36C04479" />
+  <SolidColorBrush x:Key="SliderTrackBrush" Color="#3D6F4D83" />
+  <SolidColorBrush x:Key="SliderFillBrush" Color="#FF8A4FC0" />
+  <SolidColorBrush x:Key="SliderThumbBrush" Color="#FFFFFFFF" />
 </ResourceDictionary>

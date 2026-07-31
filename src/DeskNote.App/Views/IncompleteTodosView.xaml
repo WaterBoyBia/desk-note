@@ -23,9 +23,7 @@
     <ListBox Grid.Row="2" ItemsSource="{Binding TodoList.IncompleteItems}">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <Border Margin="0,4" Padding="10" CornerRadius="10"
-                  Background="{DynamicResource PanelBrush}"
-                  BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+          <Border Margin="0,4" Style="{StaticResource GlassCardStyle}">
             <Grid>
               <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
               <Button Grid.Column="0" Width="32" Height="32" Content="○"
@@ -36,7 +34,7 @@
                       CommandParameter="{Binding}">
                 <StackPanel><TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Title}" /><TextBlock Foreground="{DynamicResource MutedTextBrush}" TextTrimming="CharacterEllipsis" Text="{Binding Note}" /></StackPanel>
               </Button>
-              <Button Grid.Column="2" Content="删除"
+              <Button Grid.Column="2" Content="删除" Style="{StaticResource DangerButtonStyle}"
                       Command="{Binding DataContext.TodoList.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                       CommandParameter="{Binding}" />
             </Grid>

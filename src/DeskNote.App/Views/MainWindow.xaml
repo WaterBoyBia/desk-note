@@ -11,11 +11,11 @@
         WindowStyle="None"
         ResizeMode="CanResize"
         Opacity="{Binding Settings.WindowOpacity, Mode=OneWay}"
-        Background="{DynamicResource WindowBrush}"
+        Background="Transparent"
         Foreground="{DynamicResource TextBrush}"
         Closing="OnClosing">
   <shell:WindowChrome.WindowChrome>
-    <shell:WindowChrome CaptionHeight="34" ResizeBorderThickness="6" CornerRadius="0" />
+    <shell:WindowChrome CaptionHeight="34" ResizeBorderThickness="6" CornerRadius="18" />
   </shell:WindowChrome.WindowChrome>
 
   <Window.Resources>
@@ -33,7 +33,21 @@
     </DataTemplate>
   </Window.Resources>
 
-  <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+  <Border x:Name="RootSurface"
+          Background="{DynamicResource FallbackWindowBrush}"
+          BorderThickness="0"
+          ClipToBounds="True">
+    <Border.Style>
+      <Style TargetType="Border">
+        <Setter Property="CornerRadius" Value="18" />
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}"
+                       Value="Maximized">
+            <Setter Property="CornerRadius" Value="0" />
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+    </Border.Style>
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="34" />
@@ -44,12 +58,12 @@
         <TextBlock Margin="12,0" VerticalAlignment="Center" FontWeight="SemiBold" Text="desk-note" />
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
                     shell:WindowChrome.IsHitTestVisibleInChrome="True">
-          <ToggleButton Width="38" ToolTip="窗口置顶"
+          <ToggleButton Style="{StaticResource TitleBarToggleButtonStyle}" ToolTip="窗口置顶"
                         IsChecked="{Binding Settings.AlwaysOnTop, Mode=OneWay}"
                         Checked="OnPinChanged" Unchecked="OnPinChanged">📌</ToggleButton>
-          <Button Width="38" Click="OnMinimize">—</Button>
-          <Button Width="38" Click="OnMaximize">□</Button>
-          <Button Width="38" Click="OnHide">×</Button>
+          <Button Style="{StaticResource TitleBarButtonStyle}" Click="OnMinimize">—</Button>
+          <Button Style="{StaticResource TitleBarButtonStyle}" Click="OnMaximize">□</Button>
+          <Button Style="{StaticResource TitleBarButtonStyle}" Click="OnHide">×</Button>
         </StackPanel>
       </Grid>
 
@@ -70,25 +84,25 @@
                 GotKeyboardFocus="OnSidebarFocusChanged"
                 LostKeyboardFocus="OnSidebarFocusChanged">
           <StackPanel Margin="8,12">
-            <Button Height="42" HorizontalContentAlignment="Left"
+            <Button Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Static models:NavigationPage.Create}"
                     ToolTip="创建新待办">
               <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="＋" /><TextBlock Text="创建新待办" /></StackPanel>
             </Button>
-            <Button Height="42" HorizontalContentAlignment="Left"
+            <Button Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Static models:NavigationPage.Incomplete}"
                     ToolTip="未完成待办">
               <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="○" /><TextBlock Text="未完成待办" /></StackPanel>
             </Button>
-            <Button Height="42" HorizontalContentAlignment="Left"
+            <Button Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Static models:NavigationPage.Completed}"
                     ToolTip="已完成待办">
               <StackPanel Orientation="Horizontal"><TextBlock Width="40" Text="✓" /><TextBlock Text="已完成待办" /></StackPanel>
             </Button>
-            <Button Height="42" HorizontalContentAlignment="Left"
+            <Button Style="{StaticResource SidebarButtonStyle}"
                     Command="{Binding NavigateCommand}"
                     CommandParameter="{x:Static models:NavigationPage.Settings}"
                     ToolTip="设置">

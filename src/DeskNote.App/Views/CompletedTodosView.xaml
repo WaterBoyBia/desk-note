@@ -7,16 +7,14 @@
     <ListBox Grid.Row="1" ItemsSource="{Binding TodoList.CompletedItems}">
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <Border Margin="0,4" Padding="10" CornerRadius="10"
-                  Background="{DynamicResource PanelBrush}"
-                  BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+          <Border Margin="0,4" Style="{StaticResource GlassCardStyle}">
             <Grid>
               <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
               <StackPanel Grid.Column="0"><TextBlock TextDecorations="Strikethrough" TextWrapping="Wrap" Text="{Binding Title}" /><TextBlock Foreground="{DynamicResource MutedTextBrush}" Text="{Binding CompletedAt, StringFormat='完成于 {0:g}'}" /></StackPanel>
               <Button Grid.Column="1" Content="恢复"
                       Command="{Binding DataContext.TodoList.RestoreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                       CommandParameter="{Binding}" />
-              <Button Grid.Column="2" Content="删除"
+              <Button Grid.Column="2" Content="删除" Style="{StaticResource DangerButtonStyle}"
                       Command="{Binding DataContext.TodoList.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                       CommandParameter="{Binding}" />
             </Grid>
@@ -38,6 +36,7 @@
       </TextBlock.Style>
     </TextBlock>
     <Button Grid.Row="2" HorizontalAlignment="Right" Margin="0,10,0,0"
+            Style="{StaticResource DangerButtonStyle}"
             Content="全部清空" Command="{Binding TodoList.ClearCompletedCommand}" />
   </Grid>
 </UserControl>

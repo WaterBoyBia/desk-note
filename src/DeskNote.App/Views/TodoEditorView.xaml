@@ -14,8 +14,13 @@
     <TextBox Grid.Row="2" AcceptsReturn="True" TextWrapping="Wrap"
              VerticalScrollBarVisibility="Auto"
              Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}" />
-    <TextBlock Grid.Row="3" Margin="0,8" Foreground="{DynamicResource DangerBrush}"
-               Text="{Binding ErrorMessage}" />
+    <Border Grid.Row="3" Margin="0,8" Padding="8"
+            Background="{DynamicResource DangerSurfaceBrush}"
+            CornerRadius="9">
+      <TextBlock Foreground="{DynamicResource DangerBrush}"
+                 TextWrapping="Wrap"
+                 Text="{Binding ErrorMessage}" />
+    </Border>
     <StackPanel Grid.Row="4" HorizontalAlignment="Right" Orientation="Horizontal">
       <Button Command="{Binding CancelCommand}" Content="取消" />
       <Button Command="{Binding SaveCommand}" Content="保存" />

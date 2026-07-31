@@ -115,7 +115,7 @@ public partial class App : System.Windows.Application
                 migrationService);
             var mainViewModel = new MainViewModel(editor, todoList, settingsViewModel);
 
-            var window = new AppMainWindow
+            var window = new AppMainWindow(themeService, new WindowBackdropService())
             {
                 DataContext = mainViewModel,
                 Topmost = settings.Current.AlwaysOnTop

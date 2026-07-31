@@ -7,8 +7,7 @@
 C# + WPF + MVVM + SQLite
 
 ## 项目框架
-- `2026-07-29-desk-note-design.md`是项目的设计方案
-- `2026-07-29-desk-note-implementation.md`是项目的实现计划，实现过程中有不明确的优先回顾该文件
+- `2026-07-31-visual-theme-implementation.md`是项目可视化上的修改计划，实现代码时有不明确的优先回顾该文件
 
 ## 关键约束
 - 回答和md文件使用中文，代码中使用英文

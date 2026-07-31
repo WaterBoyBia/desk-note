@@ -5,6 +5,8 @@ namespace DeskNote.App.Services;
 
 public sealed class ThemeService
 {
+    public event Action<AppThemeMode>? Changed;
+
     public void Apply(AppThemeMode mode)
     {
         var dictionaries = System.Windows.Application.Current.Resources.MergedDictionaries;
@@ -19,5 +21,7 @@ public sealed class ThemeService
         {
             Source = new Uri($"/Resources/Themes/{mode}.xaml", UriKind.Relative)
         });
+
+        Changed?.Invoke(mode);
     }
 }
