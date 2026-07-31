@@ -6,10 +6,15 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>desk-note</AssemblyName>
     <RootNamespace>DeskNote.App</RootNamespace>
+    <ApplicationIcon>Resources\desk-note.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.12" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\..\icon\icon.png" Link="Resources\icon.png" />
+    <Resource Include="Resources\desk-note.ico" />
   </ItemGroup>
 </Project>

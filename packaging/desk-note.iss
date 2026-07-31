@@ -14,6 +14,7 @@ OutputBaseFilename=desk-note-{#MyAppVersion}-win-x64
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=..\src\DeskNote.App\Resources\desk-note.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 CloseApplications=yes
 

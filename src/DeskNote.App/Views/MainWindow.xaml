@@ -5,6 +5,7 @@
         xmlns:models="clr-namespace:DeskNote.App.Models"
         xmlns:views="clr-namespace:DeskNote.App.Views"
         Title="desk-note"
+        Icon="/Resources/icon.png"
         Width="420" Height="600"
         MinWidth="360" MinHeight="480"
         WindowStyle="None"
