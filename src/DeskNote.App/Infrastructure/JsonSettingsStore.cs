@@ -5,7 +5,7 @@ using DeskNote.App.Models;
 
 namespace DeskNote.App.Infrastructure;
 
-public sealed class JsonSettingsStore
+public sealed class JsonSettingsStore : ISettingsStore
 {
     private static readonly JsonSerializerOptions Options = new()
     {
@@ -27,7 +27,9 @@ public sealed class JsonSettingsStore
         try
         {
             var json = await File.ReadAllTextAsync(path, cancellationToken);
-            return JsonSerializer.Deserialize<AppSettings>(json, Options) ?? new AppSettings();
+            var settings = JsonSerializer.Deserialize<AppSettings>(json, Options) ?? new AppSettings();
+            settings.Normalize();
+            return settings;
         }
         catch (JsonException)
         {

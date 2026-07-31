@@ -7,9 +7,10 @@ namespace DeskNote.App.Services;
 public sealed class SettingsService
 {
     private readonly IDataLocator locator;
-    private readonly JsonSettingsStore store;
+    private readonly ISettingsStore store;
+    private readonly SemaphoreSlim updateGate = new(1, 1);
 
-    public SettingsService(IDataLocator locator, JsonSettingsStore store)
+    public SettingsService(IDataLocator locator, ISettingsStore store)
     {
         this.locator = locator;
         this.store = store;
@@ -34,18 +35,28 @@ public sealed class SettingsService
         Action<AppSettings> update,
         CancellationToken cancellationToken = default)
     {
-        var previous = Clone(Current);
-        update(Current);
+        await updateGate.WaitAsync(cancellationToken);
         try
         {
-            await store.SaveAsync(DataDirectory, Current, cancellationToken);
-            Changed?.Invoke(this, EventArgs.Empty);
+            var previous = Clone(Current);
+            update(Current);
+            Current.Normalize();
+            try
+            {
+                await store.SaveAsync(DataDirectory, Current, cancellationToken);
+            }
+            catch
+            {
+                Current = previous;
+                throw;
+            }
         }
-        catch
+        finally
         {
-            Current = previous;
-            throw;
+            updateGate.Release();
         }
+
+        Changed?.Invoke(this, EventArgs.Empty);
     }
 
     public void SwitchDataDirectory(string dataDirectory)
@@ -60,6 +71,7 @@ public sealed class SettingsService
         Theme = source.Theme,
         StartWithWindows = source.StartWithWindows,
         AlwaysOnTop = source.AlwaysOnTop,
+        WindowOpacity = source.WindowOpacity,
         IncompleteSortDirection = source.IncompleteSortDirection,
         WindowBounds = new WindowBounds
         {
