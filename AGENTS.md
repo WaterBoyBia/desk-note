@@ -7,7 +7,7 @@
 C# + WPF + MVVM + SQLite
 
 ## 项目框架
-- `2026-07-31-true-window-transparency-design.md`是项目窗口透明的修改计划，实现代码时有不明确的优先回顾该文件
+- `2026-07-31-true-window-transparency-implementation.md`是项目窗口透明的修改计划，实现代码时有不明确的优先回顾该文件
 
 ## 关键约束
 - 回答和md文件使用中文，代码中使用英文

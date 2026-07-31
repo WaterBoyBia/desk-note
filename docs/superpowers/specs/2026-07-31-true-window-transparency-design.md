@@ -3,7 +3,7 @@
 ## 1. 文档信息
 
 - 日期：2026-07-31
-- 状态：设计已逐节确认，等待书面方案审查
+- 状态：设计与书面方案已通过用户审查
 - 适用范围：desk-note 主窗口透明度功能
 - 关联计划：`docs/superpowers/plans/2026-07-31-visual-theme-implementation.md`
 
