@@ -1,5 +1,5 @@
 #define MyAppName "desk-note"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0"
 #define MyAppExeName "desk-note.exe"
 
 [Setup]

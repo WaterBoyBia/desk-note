@@ -9,6 +9,7 @@
         Width="420" Height="600"
         MinWidth="360" MinHeight="480"
         WindowStyle="None"
+        AllowsTransparency="True"
         ResizeMode="CanResize"
         Opacity="{Binding Settings.WindowOpacity, Mode=OneWay}"
         Background="Transparent"
